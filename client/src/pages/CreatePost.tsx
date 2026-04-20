@@ -131,7 +131,7 @@ const CreatePost = () => {
                     </div>
                   </label>
                   <div>
-                    <h3 className="text-lg font-black tracking-tight text-theme-text mb-1 uppercase tracking-widest text-xs">Visual Signal</h3>
+                    <h3 className="text-lg font-black tracking-tight text-theme-text mb-1 uppercase tracking-widest text-xs">Upload Image</h3>
                     <p className="text-theme-text-muted text-[10px] font-black uppercase tracking-[0.2em] opacity-50">Upload your transmission</p>
                   </div>
                 </div>
@@ -178,7 +178,7 @@ const CreatePost = () => {
                           transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
                         }}
                       >
-                        {isSubmitting ? "Launching..." : "Broadcast"}
+                        {isSubmitting ? "Posting..." : "Post"}
                       </Button>
                     </header>
 
@@ -206,7 +206,7 @@ const CreatePost = () => {
                         <Field
                           as="textarea"
                           name="caption"
-                          placeholder="What's your frequency? Type your transmission message here..."
+                          placeholder="Message here..."
                           className="w-full h-full min-h-[300px] bg-transparent border-none text-theme-text text-lg focus:ring-0 resize-none font-bold placeholder:text-theme-text-muted/30 p-2 custom-scrollbar transition-all duration-300"
                         />
                         <div className="absolute bottom-4 right-4 text-[10px] font-black uppercase tracking-widest text-theme-text-muted opacity-30">

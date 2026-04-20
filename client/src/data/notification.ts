@@ -1,9 +1,10 @@
-import {Heart, MessageCircle, UserPlus,Bell} from 'lucide-react' 
+import {Heart, MessageCircle, UserPlus,Bell} from 'lucide-react'
+import { NotificationType } from '../constants/enums'
 
 export const notifications = [
   {
     id: 1,
-    type: "like",
+    type: NotificationType.LIKE,
     user: "Sarah Jenkins",
     content: "liked your post",
     time: "2m ago",
@@ -11,7 +12,7 @@ export const notifications = [
   },
   {
     id: 2,
-    type: "comment",
+    type: NotificationType.COMMENT,
     user: "Michael Chen",
     content: 'commented: "This looks amazing! 🔥"',
     time: "15m ago",
@@ -19,7 +20,7 @@ export const notifications = [
   },
   {
     id: 3,
-    type: "follow",
+    type: NotificationType.FOLLOW,
     user: "Elena Rodriguez",
     content: "started following you",
     time: "1h ago",
@@ -27,7 +28,7 @@ export const notifications = [
   },
   {
     id: 4,
-    type: "mention",
+    type: NotificationType.MENTION,
     user: "David Smith",
     content: "mentioned you in a comment",
     time: "3h ago",

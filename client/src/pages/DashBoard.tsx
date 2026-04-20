@@ -22,7 +22,6 @@ import { showToast } from "../utils/toast";
 import { useSelector } from "react-redux";
 import type { RootState } from "../redux/store";
 import type { ContactItem, PostItem, User } from "../types";
-import { number } from "yup";
 
 // Dashboard page showing the feed, create-post box, and suggestions
 
@@ -173,7 +172,6 @@ const DashBoard = () => {
             {/* Create Post Section */}
             <div className="glass-panel p-6 rounded-[32px] mb-10 animate-fade-in shadow-premium border-none relative overflow-hidden group">
               <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-theme-accent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
               <div className="flex gap-5 items-start mb-6">
                 <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-theme-accent to-indigo-600 flex items-center justify-center font-bold text-white shrink-0 shadow-lg relative overflow-hidden">
                   {user.avatar ? (
@@ -285,7 +283,7 @@ const DashBoard = () => {
                     transition: "all 0.3s ease",
                   }}
                 >
-                  {isPosting ? "Launching..." : "Broadcast"}
+                  {isPosting ? "Posting..." : "Post"}
                 </Button>
               </div>
             </div>
@@ -337,7 +335,7 @@ const DashBoard = () => {
           </div>
         </main>
 
-        <aside className="w-[320px] hidden lg:block sticky top-0 h-fit z-20">
+        <aside className="w-[380px] hidden lg:block sticky top-0 h-fit z-20">
           <div
             className={`glass-panel rounded-[32px] overflow-hidden shadow-premium border-none transition-all duration-700 ease-in-out ${isExpanded ? "h-[calc(100vh-140px)]" : "h-[400px]"}`}
           >

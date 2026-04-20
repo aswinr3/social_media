@@ -396,9 +396,9 @@ const Profile = () => {
             {/* About & Gallery Section */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-1">
-                <div className="glass-panel p-8 rounded-[32px] shadow-premium sticky top-[110px]">
+                <div className="glass-panel p-8 rounded-[32px] shadow-premium sticky top-[0px]">
                   <h3 className="text-sm font-black uppercase tracking-[0.2em] mb-4 text-theme-text-muted">
-                    Broadcast Info
+                    About
                   </h3>
                   <div className="bg-theme-input/40 p-5 rounded-2xl border border-theme-divider">
                     <p className="text-theme-text-secondary leading-relaxed text-sm font-bold">
@@ -412,7 +412,7 @@ const Profile = () => {
                       Digital footprint
                     </h4>
                     <p className="text-[10px] text-theme-text-muted font-bold">
-                      Encrypted connection active since 2026
+                       Active since 2026
                     </p>
                   </div>
                 </div>

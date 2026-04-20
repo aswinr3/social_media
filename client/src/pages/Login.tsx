@@ -88,7 +88,7 @@ const Login = () => {
               <Field
                 type="email"
                 id="email"
-                placeholder="explorer@connecthub.net"
+                placeholder="Enter your Email"
                 name="email"
                 className="w-full bg-theme-input/40 border border-theme-border p-4 rounded-2xl focus:ring-2 focus:ring-theme-accent/50 focus:outline-none text-theme-text transition-all duration-300 font-bold placeholder:text-theme-text-muted/40"
               />
@@ -104,7 +104,7 @@ const Login = () => {
                 htmlFor="password" 
                 className="text-[10px] font-black uppercase tracking-[0.2em] text-theme-text-muted ml-1"
               >
-                Security Key
+                Password
               </label>
               <Field
                 type="password"
@@ -140,7 +140,7 @@ const Login = () => {
               type="submit"
               className="w-full py-4 bg-gradient-to-r from-theme-accent to-indigo-600 text-white rounded-2xl font-black tracking-widest uppercase text-xs shadow-lg shadow-theme-accent/20 hover:scale-[1.02] active:scale-95 transition-all duration-300 mt-4"
             >
-              Initialize Session
+              Login
             </button>
 
             <p className="text-center text-xs font-bold text-theme-text-muted mt-4">
@@ -149,7 +149,7 @@ const Login = () => {
                 to="/"
                 className="text-theme-accent hover:underline decoration-2 underline-offset-4"
               >
-                Join the Network
+                Register
               </Link>
             </p>
           </Form>
