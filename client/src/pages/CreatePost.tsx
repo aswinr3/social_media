@@ -19,7 +19,6 @@ interface CreatePostFormValues {
 }
 
 // Create post page for composing and submitting a new post
-// Create post page for composing and submitting a new post
 const CreatePost = () => {
   const emptyUser: User = {};
   const navigate = useNavigate();
@@ -30,7 +29,7 @@ const CreatePost = () => {
   const validationSchema = Yup.object({
     caption: Yup.string().required("Caption is required"),
   });
-  // Preview the uploaded image for the new post
+  
 
   // Preview the uploaded image for the new post
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,7 +44,7 @@ const CreatePost = () => {
       };
       reader.readAsDataURL(file);
     }
-    // Submit the new post form and upload the post to the server
+   
   };
 
   // Submit the new post form and upload the post to the server
