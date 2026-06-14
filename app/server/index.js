@@ -12,12 +12,15 @@ import { initSocket } from "./socket.js";
 
 const app = express();
 app.use(express.json());
-app.use(cors());
 
-  // cors({
-  //   origin: "https://social-media-frontend-lyart-kappa.vercel.app",
-  //   credentials: true,
-  // }),
+// In production set CLIENT_URL to your Vercel frontend domain; falls back to "*" locally.
+const allowedOrigin = process.env.CLIENT_URL || "*";
+app.use(
+  cors({
+    origin: allowedOrigin,
+    credentials: true,
+  }),
+);
 
 
 
@@ -36,7 +39,7 @@ app.use('/chat', chatRouter);
 
 
 // Server running portal
-const port = 4000;
+const port = process.env.PORT || 4000;
 httpServer.listen(port, () => {
   console.log(`server is running in ${port}`);
 });
