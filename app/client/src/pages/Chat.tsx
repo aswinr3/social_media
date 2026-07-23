@@ -12,8 +12,12 @@ import {
   Smile,
   Image,
   Mic,
+  Pencil,
+  Trash2,
 } from "lucide-react";
 import api from "../services/api";
+import { showToast } from "../utils/toast";
+import { useConfirm } from "../components/ConfirmDialog";
 import { API_URL } from "../config/config";
 import { io } from "socket.io-client";
 import chatBgImage from "../assets/chat_bg_image.png";
@@ -24,11 +28,14 @@ import type { ContactItem, User } from "../types";
 const socket = io(API_URL);
 
 interface ChatMessage {
+  _id?: string;
   senderId?: string;
   recipientId?: string;
   senderName?: string;
   text?: string;
   createdAt?: string;
+  edited?: boolean;
+  editedAt?: string;
 }
 interface ChatLocationState {
   selectedUser?: ContactItem;
@@ -44,9 +51,12 @@ const Chat = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [text, setText] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editText, setEditText] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const user = useSelector((state: RootState) => state.user.user) ?? emptyUser;
+  const confirm = useConfirm();
 
   const filteredContacts = contacts.filter(
     (c) =>
@@ -70,8 +80,22 @@ const Chat = () => {
         return prev;
       });
     });
+
+    // Live sync when the other participant edits or deletes a message.
+    socket.on("message_edited", (msg: ChatMessage) => {
+      setMessages((prev) =>
+        prev.map((m) => (m._id && m._id === msg._id ? { ...m, ...msg } : m)),
+      );
+    });
+
+    socket.on("message_deleted", ({ _id }: { _id: string }) => {
+      setMessages((prev) => prev.filter((m) => m._id !== _id));
+    });
+
     return () => {
       socket.off("receive_message");
+      socket.off("message_edited");
+      socket.off("message_deleted");
     };
   }, [user._id, selectedContact]);
 
@@ -120,15 +144,74 @@ const Chat = () => {
         senderName: `${user.firstName} ${user.lastName}`,
         text,
       };
-      await api.post(`/chat/send`, payload);
-      setMessages((prev) => [
-        ...prev,
-        { ...payload, createdAt: new Date().toISOString() },
-      ]);
+      const res = await api.post(`/chat/send`, payload);
+      // Use the server's copy so the message carries its _id (needed to edit/delete it).
+      const saved: ChatMessage = res.data?.data ?? {
+        ...payload,
+        createdAt: new Date().toISOString(),
+      };
+      setMessages((prev) => [...prev, saved]);
       setText("");
       if (textareaRef.current) textareaRef.current.style.height = "auto";
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  const startEditing = (msg: ChatMessage) => {
+    if (!msg._id) return;
+    setEditingId(msg._id);
+    setEditText(msg.text || "");
+  };
+
+  const cancelEditing = () => {
+    setEditingId(null);
+    setEditText("");
+  };
+
+  const handleEditSave = async (msg: ChatMessage) => {
+    const next = editText.trim();
+    if (!msg._id || !next) return;
+    if (next === msg.text) return cancelEditing();
+
+    const previous = messages;
+    // Optimistic update, rolled back if the request fails.
+    setMessages((prev) =>
+      prev.map((m) =>
+        m._id === msg._id ? { ...m, text: next, edited: true } : m,
+      ),
+    );
+    cancelEditing();
+
+    try {
+      await api.put(`/chat/${msg._id}`, { text: next });
+    } catch (err) {
+      console.error("Failed to edit message:", err);
+      setMessages(previous);
+      showToast.error("Couldn't edit the message. Please try again.");
+    }
+  };
+
+  const handleDelete = async (msg: ChatMessage) => {
+    if (!msg._id) return;
+
+    const ok = await confirm({
+      title: "Delete this message?",
+      message: "This can't be undone. It will be removed for both of you.",
+      confirmLabel: "Delete",
+      variant: "danger",
+    });
+    if (!ok) return;
+
+    const previous = messages;
+    setMessages((prev) => prev.filter((m) => m._id !== msg._id));
+
+    try {
+      await api.delete(`/chat/${msg._id}`);
+    } catch (err) {
+      console.error("Failed to delete message:", err);
+      setMessages(previous);
+      showToast.error("Couldn't delete the message. Please try again.");
     }
   };
 
@@ -138,10 +221,10 @@ const Chat = () => {
   };
 
   return (
-    <div className="w-full h-screen bg-theme-bg overflow-hidden flex flex-col">
+    <div className="w-full h-screen app-shell overflow-hidden flex flex-col">
       <Header />
-      <div className="flex flex-1 max-w-[1400px] mx-auto w-full mt-[40px] pb-6 px-4 gap-8 overflow-hidden">
-        <aside className="w-[280px] hidden xl:block shrink-0">
+      <div className="flex flex-1 w-full mt-[40px] pb-6 gap-8 overflow-hidden">
+        <aside className="w-[15%] ml-[60px] hidden xl:block shrink-0">
           <SideBar />
         </aside>
 
@@ -329,6 +412,7 @@ const Chat = () => {
                     {messages.length > 0 ? (
                       messages.map((msg, i) => {
                         const isMine = msg.senderId === user._id;
+                        const isEditing = !!msg._id && editingId === msg._id;
                         const time = new Date(
                           msg.createdAt || Date.now(),
                         ).toLocaleTimeString([], {
@@ -337,7 +421,7 @@ const Chat = () => {
                         });
                         return (
                           <div
-                            key={i}
+                            key={msg._id || i}
                             className={`flex items-end gap-2 mb-2
                                            ${isMine ? "flex-row-reverse" : "flex-row"}`}
                           >
@@ -356,25 +440,100 @@ const Chat = () => {
                             <div
                               className={`max-w-[68%] group ${isMine ? "items-end" : "items-start"} flex flex-col`}
                             >
-                              <div
-                                className={`px-4 py-2.5 rounded-[18px] transition-all duration-200
-                                              hover:scale-[1.015] cursor-default
-                                              ${
-                                                isMine
-                                                  ? "bg-gradient-to-br from-theme-accent to-theme-accent/75 text-white rounded-br-[5px] shadow-lg shadow-theme-accent/20"
-                                                  : "bg-white/[0.07] text-theme-text border border-white/[0.09] backdrop-blur-sm rounded-bl-[5px]"
-                                              }`}
-                              >
-                                <p className="text-sm font-medium leading-relaxed">
-                                  {msg.text}
-                                </p>
-                                <p
-                                  className={`text-[9px] font-bold uppercase tracking-widest mt-1 opacity-50
-                                              ${isMine ? "text-right" : "text-left"}`}
+                              {isEditing ? (
+                                /* ── inline edit ── */
+                                <div className="w-full min-w-[240px] flex flex-col gap-2 p-3 rounded-[18px] bg-theme-card nm-inset">
+                                  <textarea
+                                    autoFocus
+                                    value={editText}
+                                    onChange={(e) => setEditText(e.target.value)}
+                                    onKeyDown={(e) => {
+                                      if (e.key === "Enter" && !e.shiftKey) {
+                                        e.preventDefault();
+                                        handleEditSave(msg);
+                                      }
+                                      if (e.key === "Escape") cancelEditing();
+                                    }}
+                                    rows={2}
+                                    className="w-full resize-none bg-transparent text-sm font-medium
+                                               text-theme-text focus:outline-none"
+                                  />
+                                  <div className="flex items-center justify-end gap-2">
+                                    <button
+                                      onClick={cancelEditing}
+                                      className="px-3 py-1 rounded-lg text-[11px] font-bold text-theme-text-muted
+                                                 hover:text-theme-text transition-colors duration-100"
+                                    >
+                                      Cancel
+                                    </button>
+                                    <button
+                                      onClick={() => handleEditSave(msg)}
+                                      disabled={!editText.trim()}
+                                      className="px-3 py-1 rounded-lg text-[11px] font-bold bg-theme-accent text-white
+                                                 disabled:opacity-40 nm-pressable"
+                                    >
+                                      Save
+                                    </button>
+                                  </div>
+                                  <p className="text-[9px] text-theme-text-muted">
+                                    Enter to save · Esc to cancel
+                                  </p>
+                                </div>
+                              ) : (
+                                <div
+                                  className={`flex items-center gap-1.5 ${isMine ? "flex-row-reverse" : "flex-row"}`}
                                 >
-                                  {time}
-                                </p>
-                              </div>
+                                  <div
+                                    className={`px-4 py-2.5 rounded-[18px] transition-all duration-200
+                                                  cursor-default
+                                                  ${
+                                                    isMine
+                                                      ? "bg-gradient-to-br from-theme-accent to-theme-accent/75 text-white rounded-br-[5px] shadow-lg shadow-theme-accent/20"
+                                                      : "bg-theme-card nm-raised-sm text-theme-text rounded-bl-[5px]"
+                                                  }`}
+                                  >
+                                    <p className="text-sm font-medium leading-relaxed whitespace-pre-wrap break-words">
+                                      {msg.text}
+                                    </p>
+                                    <p
+                                      className={`text-[9px] font-bold uppercase tracking-widest mt-1 opacity-50
+                                                  ${isMine ? "text-right" : "text-left"}`}
+                                    >
+                                      {time}
+                                      {msg.edited && " · edited"}
+                                    </p>
+                                  </div>
+
+                                  {/* Edit / delete — own messages only, revealed on hover */}
+                                  {isMine && msg._id && (
+                                    <div
+                                      className="flex items-center gap-1 opacity-0 group-hover:opacity-100
+                                                 focus-within:opacity-100 transition-opacity duration-150"
+                                    >
+                                      <button
+                                        onClick={() => startEditing(msg)}
+                                        title="Edit message"
+                                        aria-label="Edit message"
+                                        className="w-7 h-7 rounded-lg flex items-center justify-center
+                                                   text-theme-text-muted hover:text-theme-accent
+                                                   bg-theme-card nm-pressable"
+                                      >
+                                        <Pencil size={13} />
+                                      </button>
+                                      <button
+                                        onClick={() => handleDelete(msg)}
+                                        title="Delete message"
+                                        aria-label="Delete message"
+                                        className="w-7 h-7 rounded-lg flex items-center justify-center
+                                                   text-theme-text-muted hover:text-rose-500
+                                                   bg-theme-card nm-pressable"
+                                      >
+                                        <Trash2 size={13} />
+                                      </button>
+                                    </div>
+                                  )}
+                                </div>
+                              )}
                             </div>
                           </div>
                         );

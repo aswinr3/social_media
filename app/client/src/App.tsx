@@ -5,6 +5,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { ConfirmProvider } from "./components/ConfirmDialog";
 
 const Atmosphere = () => (
   <div className="atmosphere">
@@ -28,7 +29,7 @@ const App = () => {
   }, []);
 
   return (
-    <>
+    <ConfirmProvider>
       <Atmosphere />
       <RouterProvider router={Router} />
       <ToastContainer
@@ -41,9 +42,9 @@ const App = () => {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="dark"
+        theme="colored"
       />
-    </>
+    </ConfirmProvider>
   );
 };
 

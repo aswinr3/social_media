@@ -261,22 +261,22 @@ const Profile = () => {
 
   if (loading && !profileUser)
     return (
-      <div className="w-full h-screen bg-theme-bg flex items-center justify-center text-theme-text">
+      <div className="w-full h-screen app-shell flex items-center justify-center text-theme-text">
         Loading Profile...
       </div>
     );
   if (!profileUser)
     return (
-      <div className="w-full h-screen bg-theme-bg flex items-center justify-center text-theme-text">
+      <div className="w-full h-screen app-shell flex items-center justify-center text-theme-text">
         User not found
       </div>
     );
 
   return (
-    <div className="w-full min-h-screen bg-theme-bg overflow-x-hidden">
+    <div className="w-full min-h-screen app-shell overflow-x-hidden">
       <Header />
-      <div className="flex max-w-[1400px] mx-auto mt-8 px-4 gap-8">
-        <aside className="w-[280px] hidden xl:block shrink-0">
+      <div className="flex w-full mt-[40px] gap-8">
+        <aside className="w-[15%] ml-[60px] hidden xl:block shrink-0">
           <SideBar />
         </aside>
 
@@ -365,7 +365,7 @@ const Profile = () => {
                         </button>
                         <button
                           onClick={handleFriendsOpen}
-                          className="px-8 py-3.5 bg-theme-input/40 border border-theme-border text-white rounded-2xl font-black tracking-tight hover:bg-theme-input transition-all duration-300 flex items-center gap-2 active:scale-95 text-sm"
+                          className="px-8 py-3.5 bg-theme-card nm-pressable text-theme-text rounded-2xl font-black tracking-tight transition-all duration-300 flex items-center gap-2 text-sm"
                         >
                           <Users className="w-4 h-4" />
                           Network

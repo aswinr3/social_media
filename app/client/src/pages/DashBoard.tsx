@@ -157,18 +157,18 @@ const DashBoard = () => {
   };
 
   return (
-    <div className="w-full h-screen bg-theme-bg overflow-hidden flex flex-col">
+    <div className="w-full h-screen app-shell overflow-hidden flex flex-col">
       <Header />
 
-      <div className="flex flex-1 max-w-[1400px] mx-auto w-full  pt-[40px] px-4 gap-8 overflow-hidden">
+      <div className="flex flex-1 w-full mt-[40px] gap-6 overflow-hidden">
         {/* Left Sidebar - Standalone Pinned */}
-        <aside className="w-[280px] hidden xl:block h-full">
+        <aside className="w-[15%] ml-[60px] shrink-0 hidden xl:block h-full">
           <SideBar />
         </aside>
 
         {/* Center Feed - Independent Scroll */}
-        <main className="flex-1 h-full overflow-y-auto custom-scrollbar pb-20">
-          <div className="max-w-2xl mx-auto">
+        <main className="flex-1 min-w-0 h-full overflow-y-auto custom-scrollbar pb-20">
+          <div className="w-full max-w-[600px] mx-auto">
             {/* Create Post Section */}
             <div className="glass-panel p-6 rounded-[32px] mb-10 animate-fade-in shadow-premium border-none relative overflow-hidden group">
               <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-theme-accent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -304,7 +304,7 @@ const DashBoard = () => {
                   </div>
                 ))
               ) : (
-                <div className="mt-20 glass-panel p-12 text-center rounded-[32px]">
+                <div className="w-full glass-panel p-12 text-center rounded-[32px]">
                   <div className="w-20 h-20 bg-theme-input/40 rounded-full flex items-center justify-center mx-auto mb-6 text-theme-accent">
                     <svg
                       xmlns="http://www.w3.org/2001/XMLSchema-instance"
@@ -335,7 +335,7 @@ const DashBoard = () => {
           </div>
         </main>
 
-        <aside className="w-[380px] hidden lg:block sticky top-0 h-fit z-20">
+        <aside className="w-[320px] shrink-0 hidden lg:block sticky top-0 h-fit z-20 mr-[200px]">
           <div
             className={`glass-panel rounded-[32px] overflow-hidden shadow-premium border-none transition-all duration-700 ease-in-out ${isExpanded ? "h-[calc(100vh-140px)]" : "h-[400px]"}`}
           >
@@ -354,7 +354,7 @@ const DashBoard = () => {
             </div>
 
             <div
-              className={`overflow-y-auto custom-scrollbar px-2 ${isExpanded ? "max-h-[calc(100vh-280px)]" : "max-h-[280px]"}`}
+              className={`overflow-y-auto custom-scrollbar  px-2 ${isExpanded ? "max-h-[calc(100vh-280px)]" : "max-h-[280px]"}`}
             >
               {isLoadingConnections ? (
                 <div className="flex flex-col items-center justify-center p-12 gap-4">

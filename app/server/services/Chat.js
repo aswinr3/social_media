@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import { client, DATABASE } from "../config/db.js";
 import notification_services from "./Notification.js";
 import { getIO } from "../socket.js";
@@ -55,8 +56,59 @@ const getMessagesBetweenUsers = async (user1, user2) => {
   }
 };
 
+// Edit a message. Only the original sender may edit it.
+const editMessage = async (messageId, userId, text) => {
+  try {
+    const messages = client.db(DATABASE).collection("messages");
+    const existing = await messages.findOne({ _id: new ObjectId(messageId) });
+
+    if (!existing) return { error: "not_found" };
+    if (existing.senderId !== userId) return { error: "forbidden" };
+
+    const editedAt = new Date().toISOString();
+    await messages.updateOne(
+      { _id: new ObjectId(messageId) },
+      { $set: { text, edited: true, editedAt } }
+    );
+
+    const updated = { ...existing, text, edited: true, editedAt };
+
+    // Push the change to the other participant in real time.
+    getIO().to(existing.recipientId).emit("message_edited", updated);
+
+    return updated;
+  } catch (err) {
+    console.log("editMessage error", err);
+    throw new Error("Failed to edit message");
+  }
+};
+
+// Delete a message. Only the original sender may delete it.
+const deleteMessage = async (messageId, userId) => {
+  try {
+    const messages = client.db(DATABASE).collection("messages");
+    const existing = await messages.findOne({ _id: new ObjectId(messageId) });
+
+    if (!existing) return { error: "not_found" };
+    if (existing.senderId !== userId) return { error: "forbidden" };
+
+    await messages.deleteOne({ _id: new ObjectId(messageId) });
+
+    getIO()
+      .to(existing.recipientId)
+      .emit("message_deleted", { _id: messageId });
+
+    return { _id: messageId };
+  } catch (err) {
+    console.log("deleteMessage error", err);
+    throw new Error("Failed to delete message");
+  }
+};
+
 const chat_services = {
   sendMessage,
-  getMessagesBetweenUsers
+  getMessagesBetweenUsers,
+  editMessage,
+  deleteMessage
 };
 export default chat_services;

@@ -3,6 +3,7 @@ import { Search, Bell } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 import api from "../services/api";
+import ThemeToggle from "./ThemeToggle";
 import { API_URL } from "../config/config";
 
 import { useSelector } from "react-redux";
@@ -137,7 +138,9 @@ const Header = () => {
         </div>
       </div>
 
-      <div className="flex gap-8 items-center">
+      <div className="flex gap-6 items-center">
+        <ThemeToggle />
+
         <Link
           to="/notification"
           className="flex relative cursor-pointer group p-3 rounded-2xl bg-theme-input/40 hover:bg-theme-accent/20 hover:scale-110 transition-all duration-300"
@@ -169,7 +172,7 @@ const Header = () => {
                 {user.firstName ? user.firstName.charAt(0) : "U"}
               </span>
             )}
-            <div className="bg-emerald-500 h-3.5 w-3.5 rounded-full absolute bottom-0 right-0 border-2 border-[#1e1b4b] shadow-sm"></div>
+            <div className="bg-emerald-500 h-3.5 w-3.5 rounded-full absolute bottom-0 right-0 border-2 border-theme-card shadow-sm"></div>
           </div>
           <div className="text-left hidden sm:block">
             <p className="text-sm font-bold leading-tight group-hover:text-theme-accent transition-colors">

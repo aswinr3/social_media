@@ -3,6 +3,7 @@ import { MessageCircle, Heart, Share2, Bookmark, Trash2 } from "lucide-react";
 import api from "../services/api";
 import { showToast } from "../utils/toast";
 import CommentModal from "../components/CommentModal";
+import { useConfirm } from "../components/ConfirmDialog";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import type { RootState } from "../redux/store";
@@ -18,6 +19,7 @@ interface PostCardProps {
 function PostCard({ post, onPostDeleted }: PostCardProps) {
   const emptyUser: User = {};
   const user = useSelector((state: RootState) => state.user.user) ?? emptyUser;
+  const confirm = useConfirm();
   const [likes, setLikes] = useState<string[]>(post?.likes || []);
   const [comments, setComments] = useState<CommentItem[]>(post?.comments || []);
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
@@ -74,7 +76,15 @@ function PostCard({ post, onPostDeleted }: PostCardProps) {
 
   // Delete the post and refresh the feed or fallback to reload
   const handleDelete = async () => {
-    if (!window.confirm("Are you sure you want to delete this post?")) return;
+    const ok = await confirm({
+      title: "Delete this post?",
+      message:
+        "This will permanently remove the post along with its likes and comments.",
+      confirmLabel: "Delete",
+      variant: "danger",
+    });
+    if (!ok) return;
+
     try {
       await api.delete(`/posts/${_id}`);
       if (onPostDeleted) onPostDeleted(_id || "");

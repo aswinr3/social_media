@@ -79,10 +79,10 @@ const CreatePost = () => {
   };
 
   return (
-    <div className="w-full min-h-screen bg-theme-bg overflow-x-hidden">
+    <div className="w-full min-h-screen app-shell overflow-x-hidden">
       <Header />
-      <div className="flex max-w-[1400px] mx-auto mt-8 px-4 gap-8">
-        <aside className="w-[280px] hidden xl:block shrink-0">
+      <div className="flex w-full mt-[40px] gap-8">
+        <aside className="w-[15%] ml-[60px] hidden xl:block shrink-0">
           <SideBar />
         </aside>
 

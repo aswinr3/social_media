@@ -1,0 +1,22 @@
+# Development image for the npm-workspaces monorepo.
+# Installs the whole workspace once so dependencies hoist into /app/node_modules.
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Install build tooling for native modules (e.g. bcrypt).
+RUN apk add --no-cache python3 make g++
+
+# Copy manifests first to leverage Docker layer caching.
+COPY package.json package-lock.json ./
+COPY app/client/package.json ./app/client/package.json
+COPY app/server/package.json ./app/server/package.json
+
+# Install all workspaces (client + server) against the root lockfile.
+RUN npm install
+
+# Copy the rest of the source (overridden by bind mounts at runtime).
+COPY . .
+
+# Default command is overridden per-service in docker-compose.
+CMD ["npm", "run", "dev"]

@@ -1,29 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
-/* globals.css */
+
+/* ==========================================================================
+   ConnectHub — Neumorphism (Soft UI)
+   Palette: "Lilac Mist" — soft periwinkle surface, deep violet primary,
+   coral secondary. Neumorphism rule: background and cards share ONE surface
+   colour; depth comes only from paired light/dark shadows.
+   ========================================================================== */
+
 @keyframes ring-pulse {
   0%, 100% { opacity: 0.4; transform: scale(1); }
   50%       { opacity: 1;   transform: scale(1.04); }
 }
+
 :root {
-  /* Deep Abyss & Cyber Cyan Palette */
-  --theme-bg: #020617;
-  --theme-bg-gradient: linear-gradient(135deg, #020617 0%, #0f172a 50%, #042f2e 100%);
-  --theme-card-bg: rgba(15, 23, 42, 0.7);
-  --theme-accent: #06b6d4;
-  --theme-accent-hover: #22d3ee;
-  --theme-accent-glow: rgba(6, 182, 212, 0.35);
-  --theme-text: #f8fafc;
-  --theme-text-secondary: #cbd5e1;
-  --theme-text-muted: #64748b;
-  --theme-border: rgba(255, 255, 255, 0.1);
-  --theme-divider: rgba(255, 255, 255, 0.05);
-  --theme-input: rgba(0, 0, 0, 0.4);
-  --theme-success: #10b981;
-  --theme-success-hover: #059669;
-  --glass-blur: blur(24px);
-  --glass-reflection: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
-  --premium-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+  /* --- Surface: sits at the gradient's mid-tone so soft shadows still read --- */
+  --nm-surface: #e9e4f9;
+  --nm-light: #ffffff;          /* highlight  (top-left) */
+  --nm-dark: #c0b6e0;           /* shadow     (bottom-right), purple-tinted */
+
+  /* --- Soft UI depth tokens (light: lighter touch) --- */
+  --nm-raised:    4px 4px 10px var(--nm-dark), -4px -4px 10px var(--nm-light);
+  --nm-raised-sm: 2px 2px 6px var(--nm-dark), -2px -2px 6px var(--nm-light);
+  --nm-raised-lg: 7px 7px 16px var(--nm-dark), -7px -7px 16px var(--nm-light);
+  --nm-inset:     inset 3px 3px 6px var(--nm-dark), inset -3px -3px 6px var(--nm-light);
+  --nm-inset-sm:  inset 2px 2px 4px var(--nm-dark), inset -2px -2px 4px var(--nm-light);
+
+  /* --- Semantic theme tokens --- */
+  --theme-bg: var(--nm-surface);
+  --theme-bg-gradient: linear-gradient(135deg, #f4efff 0%, #e9e3fa 45%, #dcd2f6 100%);
+  --theme-card-bg: var(--nm-surface);
+
+  --theme-accent: #5b4bd6;                  /* deep violet — 4.5:1+ on surface */
+  --theme-accent-hover: #7566f0;
+  --theme-accent-glow: rgba(91, 75, 214, 0.28);
+  --theme-secondary: #ff6b9d;               /* coral pop */
+
+  --theme-text: #232741;                    /* ~13:1 on surface */
+  --theme-text-secondary: #454b6b;          /* ~7:1  */
+  --theme-text-muted: #5f6585;              /* ~5:1  */
+
+  --theme-border: rgba(255, 255, 255, 0.7); /* soft highlight edge */
+  --theme-divider: rgba(150, 138, 195, 0.3);
+  --theme-input: #e3ddf6;
+
+  --theme-success: #12a67c;
+  --theme-success-hover: #0e8a67;
+  --theme-danger: #e5484d;
+
+  --glass-blur: blur(0px);                  /* neutralised: no glass in Soft UI */
+  --premium-shadow: var(--nm-raised);
+
+  /* --- Type: soft geometric shapes echo the Soft UI surfaces --- */
+  --font-display: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-body: 'Nunito Sans', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ---------- Dark Soft UI ----------
+   Same neumorphic logic, re-toned: the highlight is a LIGHTER tint of the
+   surface (never white) and the shadow a deeper one, so depth still reads. */
+:root[data-theme="dark"] {
+  --nm-surface: #2b2449;
+  --nm-light: #382f5e;
+  --nm-dark: #1d1734;
+
+  /* Dark keeps the deeper relief — low-contrast tones need more offset to read. */
+  --nm-raised:    8px 8px 18px var(--nm-dark), -8px -8px 18px var(--nm-light);
+  --nm-raised-sm: 5px 5px 11px var(--nm-dark), -5px -5px 11px var(--nm-light);
+  --nm-raised-lg: 12px 12px 26px var(--nm-dark), -12px -12px 26px var(--nm-light);
+  --nm-inset:     inset 5px 5px 10px var(--nm-dark), inset -5px -5px 10px var(--nm-light);
+  --nm-inset-sm:  inset 3px 3px 6px var(--nm-dark), inset -3px -3px 6px var(--nm-light);
+
+  --theme-bg: var(--nm-surface);
+  --theme-bg-gradient: linear-gradient(135deg, #352b5c 0%, #2a2348 45%, #201a3c 100%);
+  --theme-card-bg: var(--nm-surface);
+
+  --theme-accent: #8b7cf6;                  /* lifted for contrast on dark */
+  --theme-accent-hover: #a599ff;
+  --theme-accent-glow: rgba(139, 124, 246, 0.35);
+  --theme-secondary: #ff7fae;
+
+  --theme-text: #eceffb;
+  --theme-text-secondary: #bcc3e0;
+  --theme-text-muted: #949cbd;
+
+  --theme-border: rgba(255, 255, 255, 0.07);
+  --theme-divider: rgba(255, 255, 255, 0.09);
+  --theme-input: #251e42;
+
+  --theme-success: #2dd4a7;
+  --theme-success-hover: #14b78d;
+  --theme-danger: #ff6b6b;
+
+  color-scheme: dark;
 }
 
 @theme {
@@ -31,6 +100,7 @@
   --color-theme-card: var(--theme-card-bg);
   --color-theme-accent: var(--theme-accent);
   --color-theme-accent-hover: var(--theme-accent-hover);
+  --color-theme-secondary: var(--theme-secondary);
   --color-theme-text: var(--theme-text);
   --color-theme-text-secondary: var(--theme-text-secondary);
   --color-theme-text-muted: var(--theme-text-muted);
@@ -39,65 +109,109 @@
   --color-theme-input: var(--theme-input);
   --color-theme-success: var(--theme-success);
   --color-theme-success-hover: var(--theme-success-hover);
-  --shadow-premium: var(--premium-shadow);
+  --color-theme-danger: var(--theme-danger);
+  --shadow-premium: var(--nm-raised);
 }
 
- 
 @layer base {
   body {
     @apply bg-theme-bg text-theme-text antialiased;
-    font-family: 'Outfit', sans-serif;
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
     background: var(--theme-bg-gradient);
     background-attachment: fixed;
     overflow-x: hidden;
   }
+
+  /* Headings carry the display face; slight negative tracking at large sizes. */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+  }
+
+  button, input, textarea, select {
+    font-family: inherit;
+  }
+
+  /* Inputs are carved INTO the surface (pressed), the Soft UI signature. */
+  input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+  textarea,
+  select {
+    background: var(--theme-input);
+    box-shadow: var(--nm-inset);
+    border: none !important;
+    color: var(--theme-text);
+    transition: box-shadow 0.3s ease;
+  }
+
+  input:focus, textarea:focus, select:focus {
+    outline: none;
+    box-shadow: var(--nm-inset), 0 0 0 3px var(--theme-accent-glow);
+  }
+
+  input::placeholder, textarea::placeholder {
+    color: var(--theme-text-muted);
+    opacity: 0.85;
+  }
 }
 
 @layer utilities {
+  .font-display { font-family: var(--font-display); letter-spacing: -0.02em; }
+  .font-body    { font-family: var(--font-body); }
+
+  /* Full-page shell: carries the purple gradient instead of a flat fill. */
+  .app-shell {
+    background: var(--theme-bg-gradient);
+    background-attachment: fixed;
+  }
+
+  /* Raised surface — replaces the old glass card everywhere. */
   .glass-panel {
     background: var(--theme-card-bg);
-    backdrop-filter: var(--glass-blur);
-    border: 1px solid var(--theme-border);
+    box-shadow: var(--nm-raised);
+    border: none;
     position: relative;
   }
 
-  .glass-panel::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    background: var(--glass-reflection);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
+  .nm-raised    { box-shadow: var(--nm-raised); }
+  .nm-raised-sm { box-shadow: var(--nm-raised-sm); }
+  .nm-raised-lg { box-shadow: var(--nm-raised-lg); }
+  .nm-inset     { box-shadow: var(--nm-inset); }
+  .nm-flat      { box-shadow: none; }
+
+  /* Pressed feedback — depth inverts on click (cause → effect).
+     Kept at 120ms so the tap registers visually inside the 100ms guideline;
+     the pressed state applies instantly (no transition) for immediate response. */
+  .nm-pressable {
+    box-shadow: var(--nm-raised-sm);
+    transition: box-shadow 0.12s ease-out, transform 0.12s ease-out,
+                background-color 0.12s ease-out, color 0.12s ease-out;
+  }
+  .nm-pressable:hover  { box-shadow: var(--nm-raised); }
+  .nm-pressable:active {
+    box-shadow: var(--nm-inset-sm);
+    transform: scale(0.98);
+    transition-duration: 0s;
   }
 
   .hover-lift {
-    @apply transition-all duration-500 ease-out;
+    @apply transition-all duration-300 ease-out;
   }
   .hover-lift:hover {
-    @apply -translate-y-2 scale-[1.02] shadow-premium;
+    @apply -translate-y-1;
+    box-shadow: var(--nm-raised-lg);
   }
 
   .text-gradient {
-    @apply bg-gradient-to-r from-theme-accent to-emerald-400 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-theme-accent to-theme-secondary bg-clip-text text-transparent;
   }
 
-  .animate-blob {
-    animation: blob 7s infinite;
-  }
-  
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
-  }
+  .animate-blob  { animation: blob 7s infinite; }
+  .animate-float { animation: float 6s ease-in-out infinite; }
 
-  .magnetic-glow {
-    position: relative;
-    overflow: hidden;
-  }
+  .magnetic-glow { position: relative; overflow: hidden; }
   .magnetic-glow::after {
     content: "";
     position: absolute;
@@ -106,31 +220,45 @@
     opacity: 0;
     transition: opacity 0.3s;
   }
-  .magnetic-glow:hover::after {
-    opacity: 1;
-  }
+  .magnetic-glow:hover::after { opacity: 1; }
 }
 
 @keyframes blob {
-  0% { transform: translate(0px, 0px) scale(1); }
-  33% { transform: translate(30px, -50px) scale(1.1); }
-  66% { transform: translate(-20px, 20px) scale(0.9); }
+  0%   { transform: translate(0px, 0px) scale(1); }
+  33%  { transform: translate(30px, -50px) scale(1.1); }
+  66%  { transform: translate(-20px, 20px) scale(0.9); }
   100% { transform: translate(0px, 0px) scale(1); }
 }
 
 @keyframes float {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
+  50%      { transform: translateY(-20px); }
 }
 
-.custom-scrollbar::-webkit-scrollbar {
-  width: 6px;
+/* MUI defaults to Roboto — align it with the app's type system. */
+.MuiTypography-root,
+.MuiButton-root,
+.MuiInputBase-root,
+.MuiListItemText-primary,
+.MuiListItemText-secondary,
+.MuiChip-label,
+.MuiTab-root {
+  font-family: var(--font-body) !important;
 }
+
+/* Soft, recessed scrollbar */
+.custom-scrollbar::-webkit-scrollbar { width: 10px; }
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--nm-surface);
+  border-radius: 999px;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  @apply bg-theme-accent/30 rounded-full hover:bg-theme-accent/50 transition-colors;
+  background: var(--nm-surface);
+  border-radius: 999px;
+  box-shadow: var(--nm-inset-sm);
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--theme-input);
 }
 
 .atmosphere {
@@ -141,22 +269,29 @@
   pointer-events: none;
 }
 
+/* Subtle colour wash — kept faint so the surface stays a single tone. */
 .blob {
   position: absolute;
   width: 500px;
   height: 500px;
   background: var(--theme-accent);
-  filter: blur(120px);
-  opacity: 0.15;
+  filter: blur(140px);
+  opacity: 0.10;
   border-radius: 50%;
 }
 
-/* Base Animations */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-.animate-fade-in {
-  animation: fadeIn 0.5s ease forwards;
+.animate-fade-in { animation: fadeIn 0.5s ease forwards; }
+
+/* Respect users who prefer less motion (skill rule: reduced-motion). */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

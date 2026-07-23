@@ -82,10 +82,10 @@ function Notification() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-theme-bg text-theme-text">
+    <div className="w-full min-h-screen app-shell text-theme-text">
       <Header />
       <div className="flex mt-[40px]">
-        <aside className="w-[20%] ml-[60px]">
+        <aside className="w-[15%] ml-[60px]">
           <SideBar />
         </aside>
 

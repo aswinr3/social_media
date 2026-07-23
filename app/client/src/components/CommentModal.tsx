@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { X, Send } from "lucide-react";
 import api from "../services/api";
+import { showToast } from "../utils/toast";
 import { useSelector } from "react-redux";
 import type { RootState } from "../redux/store";
 import type { CommentItem, User } from "../types";
@@ -52,7 +53,7 @@ const CommentModal = ({
       }
     } catch (error) {
       console.error("Error posting comment:", error);
-      alert("Failed to post comment. Please try again.");
+      showToast.error("Failed to post comment. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
