@@ -116,12 +116,12 @@ export const ConfirmProvider = ({ children }: { children: ReactNode }) => {
 
           {/* Panel */}
           <div
-            className="relative w-full max-w-[420px] rounded-[28px] bg-theme-card nm-raised-lg
+            className="relative w-full max-w-[420px] rounded-[28px] bg-theme-card glass-raise-lg
                        p-7 animate-fade-in"
           >
             <div className="flex gap-4">
               <div
-                className={`w-12 h-12 shrink-0 rounded-2xl flex items-center justify-center nm-raised-sm
+                className={`w-12 h-12 shrink-0 rounded-2xl flex items-center justify-center glass-raise-sm
                             ${isDanger ? "text-rose-500" : "text-theme-accent"}`}
               >
                 {isDanger ? (
@@ -154,7 +154,7 @@ export const ConfirmProvider = ({ children }: { children: ReactNode }) => {
                 data-confirm-focusable
                 onClick={() => close(false)}
                 className="px-5 py-2.5 rounded-2xl text-sm font-bold text-theme-text
-                           bg-theme-card nm-pressable"
+                           bg-theme-card glass-pressable"
               >
                 {options.cancelLabel || "Cancel"}
               </button>
@@ -162,7 +162,7 @@ export const ConfirmProvider = ({ children }: { children: ReactNode }) => {
                 ref={confirmBtnRef}
                 data-confirm-focusable
                 onClick={() => close(true)}
-                className={`px-5 py-2.5 rounded-2xl text-sm font-bold text-white nm-pressable
+                className={`px-5 py-2.5 rounded-2xl text-sm font-bold text-white glass-pressable
                             ${isDanger ? "bg-rose-500" : "bg-theme-accent"}`}
               >
                 {options.confirmLabel || "Confirm"}

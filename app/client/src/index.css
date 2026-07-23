@@ -2,10 +2,11 @@
 @import "tailwindcss";
 
 /* ==========================================================================
-   ConnectHub — Neumorphism (Soft UI)
-   Palette: "Lilac Mist" — soft periwinkle surface, deep violet primary,
-   coral secondary. Neumorphism rule: background and cards share ONE surface
-   colour; depth comes only from paired light/dark shadows.
+   ConnectHub — Glassmorphism
+   Frosted translucent surfaces layered over a vivid purple gradient.
+   The rule: surfaces are semi-transparent + blurred, edged with a 1px light
+   border, and lifted with a soft drop shadow. The colourful backdrop showing
+   through the glass is what sells the effect — so the background stays rich.
    ========================================================================== */
 
 @keyframes ring-pulse {
@@ -14,79 +15,76 @@
 }
 
 :root {
-  /* --- Surface: sits at the gradient's mid-tone so soft shadows still read --- */
-  --nm-surface: #e9e4f9;
-  --nm-light: #ffffff;          /* highlight  (top-left) */
-  --nm-dark: #c0b6e0;           /* shadow     (bottom-right), purple-tinted */
+  /* --- Glass surfaces (light) --- */
+  --glass-bg:        rgba(255, 255, 255, 0.52);
+  --glass-bg-strong: rgba(255, 255, 255, 0.68);
+  --glass-bg-subtle: rgba(255, 255, 255, 0.3);
+  --glass-border:    rgba(255, 255, 255, 0.75);
+  --glass-blur:      blur(20px) saturate(170%);
 
-  /* --- Soft UI depth tokens (light: lighter touch) --- */
-  --nm-raised:    4px 4px 10px var(--nm-dark), -4px -4px 10px var(--nm-light);
-  --nm-raised-sm: 2px 2px 6px var(--nm-dark), -2px -2px 6px var(--nm-light);
-  --nm-raised-lg: 7px 7px 16px var(--nm-dark), -7px -7px 16px var(--nm-light);
-  --nm-inset:     inset 3px 3px 6px var(--nm-dark), inset -3px -3px 6px var(--nm-light);
-  --nm-inset-sm:  inset 2px 2px 4px var(--nm-dark), inset -2px -2px 4px var(--nm-light);
+  --glass-shadow-sm: 0 4px 16px rgba(70, 45, 130, 0.10);
+  --glass-shadow:    0 8px 32px rgba(70, 45, 130, 0.14);
+  --glass-shadow-lg: 0 18px 50px rgba(70, 45, 130, 0.22);
 
   /* --- Semantic theme tokens --- */
-  --theme-bg: var(--nm-surface);
-  --theme-bg-gradient: linear-gradient(135deg, #f4efff 0%, #e9e3fa 45%, #dcd2f6 100%);
-  --theme-card-bg: var(--nm-surface);
+  --theme-bg: #ddd0f7;
+  --theme-bg-gradient: linear-gradient(135deg, #f0e6ff 0%, #ddcdfa 45%, #c3aef2 100%);
+  --theme-card-bg: var(--glass-bg);
 
-  --theme-accent: #5b4bd6;                  /* deep violet — 4.5:1+ on surface */
-  --theme-accent-hover: #7566f0;
-  --theme-accent-glow: rgba(91, 75, 214, 0.28);
-  --theme-secondary: #ff6b9d;               /* coral pop */
+  --theme-accent: #5b3fd6;
+  --theme-accent-hover: #7458f5;
+  --theme-accent-glow: rgba(91, 63, 214, 0.3);
+  --theme-secondary: #ff5c9d;
 
-  --theme-text: #232741;                    /* ~13:1 on surface */
-  --theme-text-secondary: #454b6b;          /* ~7:1  */
-  --theme-text-muted: #5f6585;              /* ~5:1  */
+  --theme-text: #221a3d;
+  --theme-text-secondary: #443a6b;
+  --theme-text-muted: #5e5484;
 
-  --theme-border: rgba(255, 255, 255, 0.7); /* soft highlight edge */
-  --theme-divider: rgba(150, 138, 195, 0.3);
-  --theme-input: #e3ddf6;
+  --theme-border: var(--glass-border);
+  --theme-divider: rgba(120, 95, 190, 0.22);
+  --theme-input: rgba(255, 255, 255, 0.42);
 
-  --theme-success: #12a67c;
-  --theme-success-hover: #0e8a67;
+  --theme-success: #0f9c74;
+  --theme-success-hover: #0c8060;
   --theme-danger: #e5484d;
 
-  --glass-blur: blur(0px);                  /* neutralised: no glass in Soft UI */
-  --premium-shadow: var(--nm-raised);
+  --premium-shadow: var(--glass-shadow);
 
-  /* --- Type: soft geometric shapes echo the Soft UI surfaces --- */
+  /* --- Type --- */
   --font-display: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
   --font-body: 'Nunito Sans', ui-sans-serif, system-ui, sans-serif;
 }
 
-/* ---------- Dark Soft UI ----------
-   Same neumorphic logic, re-toned: the highlight is a LIGHTER tint of the
-   surface (never white) and the shadow a deeper one, so depth still reads. */
+/* ---------- Dark glass ----------
+   Inverted: surfaces become a light film over a deep backdrop, and the border
+   is a faint white edge rather than a bright one. */
 :root[data-theme="dark"] {
-  --nm-surface: #2b2449;
-  --nm-light: #382f5e;
-  --nm-dark: #1d1734;
+  --glass-bg:        rgba(255, 255, 255, 0.08);
+  --glass-bg-strong: rgba(255, 255, 255, 0.13);
+  --glass-bg-subtle: rgba(255, 255, 255, 0.05);
+  --glass-border:    rgba(255, 255, 255, 0.15);
+  --glass-blur:      blur(22px) saturate(150%);
 
-  /* Dark keeps the deeper relief — low-contrast tones need more offset to read. */
-  --nm-raised:    8px 8px 18px var(--nm-dark), -8px -8px 18px var(--nm-light);
-  --nm-raised-sm: 5px 5px 11px var(--nm-dark), -5px -5px 11px var(--nm-light);
-  --nm-raised-lg: 12px 12px 26px var(--nm-dark), -12px -12px 26px var(--nm-light);
-  --nm-inset:     inset 5px 5px 10px var(--nm-dark), inset -5px -5px 10px var(--nm-light);
-  --nm-inset-sm:  inset 3px 3px 6px var(--nm-dark), inset -3px -3px 6px var(--nm-light);
+  --glass-shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.28);
+  --glass-shadow:    0 8px 32px rgba(0, 0, 0, 0.38);
+  --glass-shadow-lg: 0 18px 50px rgba(0, 0, 0, 0.5);
 
-  --theme-bg: var(--nm-surface);
-  --theme-bg-gradient: linear-gradient(135deg, #352b5c 0%, #2a2348 45%, #201a3c 100%);
-  --theme-card-bg: var(--nm-surface);
+  --theme-bg: #1b1236;
+  --theme-bg-gradient: linear-gradient(135deg, #33205e 0%, #22164a 45%, #150f30 100%);
+  --theme-card-bg: var(--glass-bg);
 
-  --theme-accent: #8b7cf6;                  /* lifted for contrast on dark */
-  --theme-accent-hover: #a599ff;
-  --theme-accent-glow: rgba(139, 124, 246, 0.35);
-  --theme-secondary: #ff7fae;
+  --theme-accent: #a78bfa;
+  --theme-accent-hover: #c4b1ff;
+  --theme-accent-glow: rgba(167, 139, 250, 0.38);
+  --theme-secondary: #ff7fb4;
 
-  --theme-text: #eceffb;
-  --theme-text-secondary: #bcc3e0;
-  --theme-text-muted: #949cbd;
+  --theme-text: #f2eefc;
+  --theme-text-secondary: #c8bfe6;
+  --theme-text-muted: #9d93c2;
 
-  --theme-border: rgba(255, 255, 255, 0.07);
-  --theme-divider: rgba(255, 255, 255, 0.09);
-  --theme-input: #251e42;
+  --theme-border: var(--glass-border);
+  --theme-divider: rgba(255, 255, 255, 0.12);
+  --theme-input: rgba(255, 255, 255, 0.07);
 
   --theme-success: #2dd4a7;
   --theme-success-hover: #14b78d;
@@ -110,7 +108,7 @@
   --color-theme-success: var(--theme-success);
   --color-theme-success-hover: var(--theme-success-hover);
   --color-theme-danger: var(--theme-danger);
-  --shadow-premium: var(--nm-raised);
+  --shadow-premium: var(--glass-shadow);
 }
 
 @layer base {
@@ -124,84 +122,97 @@
     overflow-x: hidden;
   }
 
-  /* Headings carry the display face; slight negative tracking at large sizes. */
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
     letter-spacing: -0.02em;
     line-height: 1.25;
   }
 
-  button, input, textarea, select {
-    font-family: inherit;
-  }
-
-  /* Inputs are carved INTO the surface (pressed), the Soft UI signature. */
+  /* Inputs are frosted panes with a visible edge. */
   input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
   textarea,
   select {
     background: var(--theme-input);
-    box-shadow: var(--nm-inset);
-    border: none !important;
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
     color: var(--theme-text);
-    transition: box-shadow 0.3s ease;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
   }
 
   input:focus, textarea:focus, select:focus {
     outline: none;
-    box-shadow: var(--nm-inset), 0 0 0 3px var(--theme-accent-glow);
+    border-color: var(--theme-accent);
+    box-shadow: 0 0 0 3px var(--theme-accent-glow);
   }
 
   input::placeholder, textarea::placeholder {
     color: var(--theme-text-muted);
-    opacity: 0.85;
+    opacity: 0.9;
   }
+
+  button, input, textarea, select { font-family: inherit; }
 }
 
 @layer utilities {
   .font-display { font-family: var(--font-display); letter-spacing: -0.02em; }
   .font-body    { font-family: var(--font-body); }
 
-  /* Full-page shell: carries the purple gradient instead of a flat fill. */
+  /* Page shell stays transparent: <body> paints the gradient and the colour
+     orbs sit above it, so glass surfaces have something to refract. An opaque
+     background here would hide both. */
   .app-shell {
-    background: var(--theme-bg-gradient);
-    background-attachment: fixed;
+    background: transparent;
   }
 
-  /* Raised surface — replaces the old glass card everywhere. */
+  /* The core frosted surface — used by every card in the app. */
   .glass-panel {
-    background: var(--theme-card-bg);
-    box-shadow: var(--nm-raised);
-    border: none;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
     position: relative;
   }
 
-  .nm-raised    { box-shadow: var(--nm-raised); }
-  .nm-raised-sm { box-shadow: var(--nm-raised-sm); }
-  .nm-raised-lg { box-shadow: var(--nm-raised-lg); }
-  .nm-inset     { box-shadow: var(--nm-inset); }
-  .nm-flat      { box-shadow: none; }
+  /* Elevation scale */
+  .glass-raise-sm { box-shadow: var(--glass-shadow-sm); }
+  .glass-raise    { box-shadow: var(--glass-shadow); }
+  .glass-raise-lg { box-shadow: var(--glass-shadow-lg); }
 
-  /* Pressed feedback — depth inverts on click (cause → effect).
-     Kept at 120ms so the tap registers visually inside the 100ms guideline;
-     the pressed state applies instantly (no transition) for immediate response. */
-  .nm-pressable {
-    box-shadow: var(--nm-raised-sm);
-    transition: box-shadow 0.12s ease-out, transform 0.12s ease-out,
-                background-color 0.12s ease-out, color 0.12s ease-out;
+  /* Frosted chip/field look for smaller elements. */
+  .glass-inset {
+    background: var(--theme-input);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
   }
-  .nm-pressable:hover  { box-shadow: var(--nm-raised); }
-  .nm-pressable:active {
-    box-shadow: var(--nm-inset-sm);
+
+  /* Interactive glass: brightens on hover, settles on press.
+     Kept fast (120ms) so taps register immediately. */
+  .glass-pressable {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow-sm);
+    transition: background 0.12s ease-out, box-shadow 0.12s ease-out,
+                transform 0.12s ease-out, border-color 0.12s ease-out;
+  }
+  .glass-pressable:hover {
+    background: var(--glass-bg-strong);
+    box-shadow: var(--glass-shadow);
+  }
+  .glass-pressable:active {
     transform: scale(0.98);
+    box-shadow: var(--glass-shadow-sm);
     transition-duration: 0s;
   }
 
-  .hover-lift {
-    @apply transition-all duration-300 ease-out;
-  }
+  .hover-lift { @apply transition-all duration-300 ease-out; }
   .hover-lift:hover {
     @apply -translate-y-1;
-    box-shadow: var(--nm-raised-lg);
+    box-shadow: var(--glass-shadow-lg);
   }
 
   .text-gradient {
@@ -246,19 +257,16 @@
   font-family: var(--font-body) !important;
 }
 
-/* Soft, recessed scrollbar */
+/* Translucent scrollbar */
 .custom-scrollbar::-webkit-scrollbar { width: 10px; }
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: var(--nm-surface);
-  border-radius: 999px;
-}
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: var(--nm-surface);
+  background: var(--glass-bg-strong);
   border-radius: 999px;
-  box-shadow: var(--nm-inset-sm);
+  border: 1px solid var(--glass-border);
 }
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: var(--theme-input);
+  background: var(--theme-accent);
 }
 
 .atmosphere {
@@ -269,16 +277,17 @@
   pointer-events: none;
 }
 
-/* Subtle colour wash — kept faint so the surface stays a single tone. */
+/* Colour orbs behind the glass — this is what the blur picks up. */
 .blob {
   position: absolute;
-  width: 500px;
-  height: 500px;
-  background: var(--theme-accent);
-  filter: blur(140px);
-  opacity: 0.10;
+  width: 520px;
+  height: 520px;
+  filter: blur(110px);
+  opacity: 0.5;
   border-radius: 50%;
 }
+
+:root[data-theme="dark"] .blob { opacity: 0.42; }
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
@@ -287,7 +296,6 @@
 
 .animate-fade-in { animation: fadeIn 0.5s ease forwards; }
 
-/* Respect users who prefer less motion (skill rule: reduced-motion). */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

@@ -36,7 +36,7 @@ const SideBar = () => {
         <p className="px-4 text-[10px] font-black uppercase tracking-widest text-theme-text-muted mb-2">Main Menu</p>
         {nav.map((x, i) => (
           <Link to={x.path} key={i}>
-            <div className="flex gap-4 h-[60px] items-center px-5 rounded-[20px] cursor-pointer group hover:bg-theme-accent bg-theme-card nm-pressable">
+            <div className="flex gap-4 h-[60px] items-center px-5 rounded-[20px] cursor-pointer group hover:bg-theme-accent bg-theme-card glass-pressable">
               <span className="text-theme-accent group-hover:text-white transition-colors duration-100">
                 {<x.name size={22} />}
               </span>
@@ -51,7 +51,7 @@ const SideBar = () => {
       <div className="pt-4 border-t border-theme-divider">
         <div
           onClick={handleLogout}
-          className="flex gap-4 h-[60px] items-center px-5 rounded-[20px] bg-theme-card nm-pressable cursor-pointer group hover:bg-rose-500"
+          className="flex gap-4 h-[60px] items-center px-5 rounded-[20px] bg-theme-card glass-pressable cursor-pointer group hover:bg-rose-500"
         >
           <span className="text-rose-500 group-hover:text-white transition-colors duration-100">
             <LogOut size={22} />

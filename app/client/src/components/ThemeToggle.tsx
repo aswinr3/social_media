@@ -36,7 +36,7 @@ const ThemeToggle = () => {
       aria-checked={isDark}
       aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
       title={isDark ? "Light mode" : "Dark mode"}
-      className="relative h-[44px] w-[80px] shrink-0 rounded-full bg-theme-input nm-inset cursor-pointer transition-colors duration-300"
+      className="relative h-[44px] w-[80px] shrink-0 rounded-full bg-theme-input glass-inset cursor-pointer transition-colors duration-300"
     >
       {/* Track icons */}
       <Sun
@@ -54,7 +54,7 @@ const ThemeToggle = () => {
 
       {/* Raised knob */}
       <span
-        className={`absolute top-1/2 -translate-y-1/2 flex h-[34px] w-[34px] items-center justify-center rounded-full bg-theme-card nm-raised-sm transition-transform duration-300 ease-out ${
+        className={`absolute top-1/2 -translate-y-1/2 flex h-[34px] w-[34px] items-center justify-center rounded-full bg-theme-card glass-raise-sm transition-transform duration-300 ease-out ${
           isDark ? "translate-x-[41px]" : "translate-x-[5px]"
         }`}
       >

@@ -7,12 +7,14 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { ConfirmProvider } from "./components/ConfirmDialog";
 
+// Colour orbs behind the frosted surfaces — the blur picks these up, which is
+// what gives the glass its tint. Kept saturated so the effect actually reads.
 const Atmosphere = () => (
   <div className="atmosphere">
-    <div className="blob animate-blob left-[-10%] top-[-10%] bg-purple-600/20" />
-    <div className="blob animate-blob [animation-delay:2s] right-[-5%] top-[20%] bg-blue-600/20" />
-    <div className="blob animate-blob [animation-delay:4s] left-[15%] bottom-[-10%] bg-indigo-600/20" />
-    <div className="blob animate-blob [animation-delay:6s] right-[20%] bottom-[10%] bg-violet-600/20" />
+    <div className="blob animate-blob left-[-10%] top-[-10%] bg-fuchsia-500/70" />
+    <div className="blob animate-blob [animation-delay:2s] right-[-5%] top-[15%] bg-indigo-500/70" />
+    <div className="blob animate-blob [animation-delay:4s] left-[12%] bottom-[-12%] bg-violet-500/70" />
+    <div className="blob animate-blob [animation-delay:6s] right-[18%] bottom-[8%] bg-sky-400/60" />
   </div>
 );
 

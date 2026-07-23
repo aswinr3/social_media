@@ -442,7 +442,7 @@ const Chat = () => {
                             >
                               {isEditing ? (
                                 /* ── inline edit ── */
-                                <div className="w-full min-w-[240px] flex flex-col gap-2 p-3 rounded-[18px] bg-theme-card nm-inset">
+                                <div className="w-full min-w-[240px] flex flex-col gap-2 p-3 rounded-[18px] bg-theme-card glass-inset">
                                   <textarea
                                     autoFocus
                                     value={editText}
@@ -470,7 +470,7 @@ const Chat = () => {
                                       onClick={() => handleEditSave(msg)}
                                       disabled={!editText.trim()}
                                       className="px-3 py-1 rounded-lg text-[11px] font-bold bg-theme-accent text-white
-                                                 disabled:opacity-40 nm-pressable"
+                                                 disabled:opacity-40 glass-pressable"
                                     >
                                       Save
                                     </button>
@@ -489,7 +489,7 @@ const Chat = () => {
                                                   ${
                                                     isMine
                                                       ? "bg-gradient-to-br from-theme-accent to-theme-accent/75 text-white rounded-br-[5px] shadow-lg shadow-theme-accent/20"
-                                                      : "bg-theme-card nm-raised-sm text-theme-text rounded-bl-[5px]"
+                                                      : "bg-theme-card glass-raise-sm text-theme-text rounded-bl-[5px]"
                                                   }`}
                                   >
                                     <p className="text-sm font-medium leading-relaxed whitespace-pre-wrap break-words">
@@ -516,7 +516,7 @@ const Chat = () => {
                                         aria-label="Edit message"
                                         className="w-7 h-7 rounded-lg flex items-center justify-center
                                                    text-theme-text-muted hover:text-theme-accent
-                                                   bg-theme-card nm-pressable"
+                                                   bg-theme-card glass-pressable"
                                       >
                                         <Pencil size={13} />
                                       </button>
@@ -526,7 +526,7 @@ const Chat = () => {
                                         aria-label="Delete message"
                                         className="w-7 h-7 rounded-lg flex items-center justify-center
                                                    text-theme-text-muted hover:text-rose-500
-                                                   bg-theme-card nm-pressable"
+                                                   bg-theme-card glass-pressable"
                                       >
                                         <Trash2 size={13} />
                                       </button>

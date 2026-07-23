@@ -365,7 +365,7 @@ const Profile = () => {
                         </button>
                         <button
                           onClick={handleFriendsOpen}
-                          className="px-8 py-3.5 bg-theme-card nm-pressable text-theme-text rounded-2xl font-black tracking-tight transition-all duration-300 flex items-center gap-2 text-sm"
+                          className="px-8 py-3.5 bg-theme-card glass-pressable text-theme-text rounded-2xl font-black tracking-tight transition-all duration-300 flex items-center gap-2 text-sm"
                         >
                           <Users className="w-4 h-4" />
                           Network
